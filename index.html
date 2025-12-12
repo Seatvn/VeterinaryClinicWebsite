@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetLife - Управление Клиникой</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-heart-pulse"></i> VetLife
+            </div>
+            <nav class="menu">
+                <button class="menu-btn active" data-section="dashboard">
+                    <i class="fa-solid fa-chart-pie"></i> Главная
+                </button>
+                <button class="menu-btn" data-section="patients">
+                    <i class="fa-solid fa-paw"></i> Пациенты
+                </button>
+                <button class="menu-btn" data-section="doctors">
+                    <i class="fa-solid fa-user-doctor"></i> Врачи
+                </button>
+                <button class="menu-btn" data-section="services">
+                    <i class="fa-solid fa-file-invoice-dollar"></i> Услуги
+                </button>
+                <button class="menu-btn" data-section="appointments">
+                    <i class="fa-solid fa-calendar-check"></i> Приёмы
+                </button>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h2 id="pageTitle">Главная</h2>
+                <div class="user-profile">
+                    <span>Администратор</span>
+                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                </div>
+            </header>
+
+            <div class="content-area">
+                
+                <section id="dashboard" class="section active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon bg-blue"><i class="fa-solid fa-paw"></i></div>
+                            <div class="stat-info">
+                                <h3>Пациенты</h3>
+                                <p id="patientsCount">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon bg-green"><i class="fa-solid fa-user-md"></i></div>
+                            <div class="stat-info">
+                                <h3>Врачи</h3>
+                                <p id="doctorsCount">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon bg-purple"><i class="fa-solid fa-calendar-day"></i></div>
+                            <div class="stat-info">
+                                <h3>Приёмы</h3>
+                                <p id="appointmentsCount">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="section-subtitle">Быстрые действия</h3>
+                    <div class="quick-actions-grid">
+                        <button class="action-card" id="appointmentBtn">
+                            <div class="action-icon"><i class="fa-solid fa-plus-circle"></i></div>
+                            <span>Записать на приём</span>
+                        </button>
+                        <button class="action-card" id="searchPatientBtn">
+                            <div class="action-icon"><i class="fa-solid fa-search"></i></div>
+                            <span>Найти пациента</span>
+                        </button>
+                        <button class="action-card" id="searchServiceBtn">
+                            <div class="action-icon"><i class="fa-solid fa-tags"></i></div>
+                            <span>Найти услугу</span>
+                        </button>
+                    </div>
+                </section>
+
+                <section id="patients" class="section">
+                    <div class="controls-bar">
+                        <input type="text" id="patientsSearch" class="search-input" placeholder="Поиск по имени или виду...">
+                        <button class="btn btn-primary" onclick="showForm('pets')">
+                            <i class="fa-solid fa-plus"></i> Добавить
+                        </button>
+                    </div>
+                    <div id="patientsList" class="cards-grid"></div>
+                </section>
+
+                <section id="doctors" class="section">
+                    <div class="controls-bar">
+                        <input type="text" id="doctorsSearch" class="search-input" placeholder="Поиск врача...">
+                        <button class="btn btn-primary" onclick="showForm('doctors')">
+                            <i class="fa-solid fa-plus"></i> Добавить
+                        </button>
+                    </div>
+                    <div id="doctorsList" class="cards-grid"></div>
+                </section>
+
+                <section id="services" class="section">
+                    <div class="controls-bar">
+                        <input type="text" id="servicesSearch" class="search-input" placeholder="Поиск услуги...">
+                        <button class="btn btn-primary" onclick="showForm('services')">
+                            <i class="fa-solid fa-plus"></i> Добавить
+                        </button>
+                    </div>
+                    <div id="servicesList" class="cards-grid"></div>
+                </section>
+
+                <section id="appointments" class="section">
+                    <div class="controls-bar">
+                        <div class="spacer"></div> 
+                        <button class="btn btn-primary" onclick="showForm('visits')">
+                            <i class="fa-solid fa-plus"></i> Новая запись
+                        </button>
+                    </div>
+                    <div id="appointmentsList" class="cards-grid"></div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <div id="modal" class="modal-overlay">
+        <div class="modal-window">
+            <div class="modal-header">
+                <h3 id="formTitle">Форма</h3>
+                <span class="close-btn" onclick="closeForm()">&times;</span>
+            </div>
+            <form id="dataForm" onsubmit="submitForm(event)">
+                <div id="formFields" class="modal-body">
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeForm()">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="searchModal" class="modal-overlay">
+        <div class="modal-window modal-small">
+            <div class="modal-header">
+                <h3>Поиск</h3>
+                <span class="close-btn" onclick="closeSearchModal()">&times;</span>
+            </div>
+            <div id="searchContent" class="modal-body"></div>
+        </div>
+    </div>
+
+    <div id="detailsModal" class="modal-overlay">
+        <div class="modal-window">
+            <div class="modal-header">
+                <h3>Детали</h3>
+                <span class="close-btn" onclick="closeDetailsModal()">&times;</span>
+            </div>
+            <div id="detailsContent" class="modal-body details-view"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="deleteBtn">Удалить</button>
+                <button type="button" class="btn btn-secondary" onclick="closeDetailsModal()">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="alertContainer"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
